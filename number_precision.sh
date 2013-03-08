@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# This script demonstrate the effect of changing precision_step on numbers
+# This script demonstrates the effect of changing precision_step on numbers
 #
 curl -XDELETE localhost:9200/test-precision-1,test-precision-8,test-precision-64
 echo
