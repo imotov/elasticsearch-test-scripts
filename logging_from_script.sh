@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Simple example of sorting using script
+# Simple example of logging from a script
 #
 
 curl -XDELETE localhost:9200/test
