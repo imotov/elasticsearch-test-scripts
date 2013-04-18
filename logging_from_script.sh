@@ -21,7 +21,7 @@ echo
 curl "localhost:9200/test/doc/_search" -d '{
     "script_fields": {
         "test": {
-            "script": "org.elasticsearch.common.logging.Loggers.getLogger(\"my_logger\").info(\"here comes a script\"); 42"
+            "script": "org.elasticsearch.common.logging.Loggers.getLogger(\"my_logger\").info(\"here comes a script {}\", 42); 42"
         }
     }
 }'
