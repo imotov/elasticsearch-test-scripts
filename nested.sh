@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# This script demonstrates how to turn off tf and idf components for scoring
+# This script demonstrates how to perform nested queries
 #
 curl -XDELETE localhost:9200/test-idx
 curl -XPUT localhost:9200/test-idx -d '{
