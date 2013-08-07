@@ -11,10 +11,19 @@
 # The mailboxes__jsonify_mbox.py and mailboxes__convert_enron_inbox_to_mbox.py are modified 
 # versions of https://github.com/ptwobrussell/Mining-the-Social-Web/tree/master/python_code
 #
-curl -O -L http://www.cs.cmu.edu/~enron/enron_mail_20110402.tgz
-tar -xzf enron_mail_20110402.tgz
-python mailboxes__convert_enron_inbox_to_mbox.py enron_mail_20110402 > enron.mbox
-python mailboxes__jsonify_mbox.py enron.mbox > enron.mbox.json
+if [ ! -d enron_mail_20110402 ]; then
+    echo "Downloading enron file"
+    curl -O -L http://www.cs.cmu.edu/~enron/enron_mail_20110402.tgz
+    tar -xzf enron_mail_20110402.tgz
+fi
+if [ ! -f enron.mbox.json ]; then
+    echo "Converting enron emails to mbox format"
+    # python mailboxes__convert_enron_inbox_to_mbox.py enron_mail_20110402 > enron.mbox
+    echo "Converting enron emails to json format"
+    # python mailboxes__jsonify_mbox.py enron.mbox > enron.mbox.json
+    # rm enron.mbox
+fi
+echo "Indexing enron emails"
 curl -XDELETE localhost:9200/enron
 curl -XPUT localhost:9200/enron -d '{
     "settings": {
@@ -113,4 +122,4 @@ curl -XPUT localhost:9200/enron -d '{
         }
     }
 }'
-./stream2es stdin -i enron -t email < enron.mbox.json
+stream2es stdin -i enron -t email < enron.mbox.json
