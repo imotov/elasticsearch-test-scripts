@@ -1,3 +1,28 @@
+echo "----------------------------------------------------------------------"
+echo "Find information about city of Boston"
+curl 'localhost:9200/test-data/states/_search?pretty' -d '{
+    "query": {
+        "match": {
+            "city": "Boston"
+        }
+    }
+}'
+echo
+echo "----------------------------------------------------------------------"
+echo "Find all cities with population between 500,000 and 1,000,000 people"
+curl -XGET "http://localhost:9200/test-data/cities/_search?pretty" -d '{
+    "query": {
+        "range": {
+            "population2012": {
+                "from": 500000,
+                "to": 1000000
+            } 
+        }
+    }
+}'
+echo
+echo "----------------------------------------------------------------------"
+echo "Return all cities sorted by population"
 curl -s 'localhost:9200/test-data/cities/_search?pretty&fields=city,state' -d '{
     "sort": [
         {"state": {"order": "asc"}},
