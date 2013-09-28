@@ -18,17 +18,19 @@ if [ ! -d enron_mail_20110402 ]; then
 fi
 if [ ! -f enron.mbox.json ]; then
     echo "Converting enron emails to mbox format"
-    # python mailboxes__convert_enron_inbox_to_mbox.py enron_mail_20110402 > enron.mbox
+    python mailboxes__convert_enron_inbox_to_mbox.py enron_mail_20110402 > enron.mbox
     echo "Converting enron emails to json format"
-    # python mailboxes__jsonify_mbox.py enron.mbox > enron.mbox.json
-    # rm enron.mbox
+    python mailboxes__jsonify_mbox.py enron.mbox > enron.mbox.json
+    rm enron.mbox
 fi
 echo "Indexing enron emails"
-curl -XDELETE localhost:9200/enron
-curl -XPUT localhost:9200/enron -d '{
+es_host="http://localhost:9200"
+curl -XDELETE "$es_host/enron"
+curl -XPUT "$es_host/enron" -d '{
     "settings": {
         "index.number_of_replicas": 0,
-        "index.number_of_shards": 3
+        "index.number_of_shards": 5,
+        "index.refresh_interval": -1
     },
     "mappings": {
         "email": {
@@ -122,4 +124,4 @@ curl -XPUT localhost:9200/enron -d '{
         }
     }
 }'
-stream2es stdin -i enron -t email < enron.mbox.json
+stream2es stdin -i enron -t email -u $es_host < enron.mbox.json
