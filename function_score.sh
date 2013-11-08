@@ -107,29 +107,50 @@ curl -XGET "localhost:9200/test-idx/doc/_search?pretty&fields=" -d '{
 }'
 echo
 echo "function_score - 2"
-    curl -XGET "localhost:9200/test-idx/doc/_search?pretty&fields=" -d '{
-        "query": {
-            "function_score": {
-                "query": {
+curl -XGET "localhost:9200/test-idx/doc/_search?pretty&fields=" -d '{
+    "query": {
+        "function_score": {
+            "query": {
+                "term": {
+                    "name": "user1234"
+                }
+            },
+            "functions": [{
+                "filter": {
                     "term": {
-                        "name": "user1234"
+                        "subject": "math"
                     }
                 },
-                "functions": [{
-                    "filter": {
-                        "term": {
-                            "subject": "math"
-                        }
-                    },
-                    "script_score": {
-                        "script": "doc[\"subject_score\"].value"
-                    }
-                }, {
-                    "boost_factor": 0
-            
-                }],
-                "score_mode": "first",
-                "boost_mode": "sum"
-            }
+                "script_score": {
+                    "script": "doc[\"subject_score\"].value"
+                }
+            }, {
+                "boost_factor": 0
+        
+            }],
+            "score_mode": "first",
+            "boost_mode": "sum"
         }
-    }'
+    }
+}'
+echo
+curl -XGET "localhost:9200/test-idx/doc/_search?pretty&fields=" -d '{
+    "query": {
+        "custom_filters_score": {
+            "query": {
+                "term": {
+                    "name": "user1234"
+                }
+            },
+            "filters": [{
+                "boost": 2000,
+                "filter": {
+                    "term": {
+                        "subject": "math"
+                    }
+                }
+            }],
+            "score_mode": "first"
+        }
+    }
+}'
