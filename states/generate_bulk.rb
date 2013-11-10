@@ -194,13 +194,13 @@ class BulkScriptGenerator
           "type": "geo_point"
         },
         "population2010" : {
-          "type" : "string"
+          "type" : "long"
         },
         "population2012" : {
-          "type" : "string"
+          "type" : "long"
         },
         "rank" : {
-          "type" : "string"
+          "type" : "integer"
         },
         "state" : {
           "type" : "string"
