@@ -124,4 +124,4 @@ curl -XPUT "$es_host/enron" -d '{
         }
     }
 }'
-stream2es stdin -i enron -t email -u $es_host < enron.mbox.json
+stream2es stdin -i enron -t email --target $es_host < enron.mbox.json
