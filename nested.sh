@@ -9,14 +9,20 @@ curl -XPUT localhost:9200/test-idx -d '{
         "index.number_of_replicas": 0
     },
     "mappings": {
-        "doc": {
-            "properties": {
-                "obj1": {"type": "nested"}
-            }
-        }
+	    "type1" : {
+	        "properties" : {
+	            "obj1" : {
+	                "type" : "nested",
+	                "properties": {
+	                    "name" : {"type": "string", "index": "not_analyzed"},
+	                    "count" : {"type": "integer"}
+	                }
+	            }
+	        }
+	    }
     }
 }'
-curl -XPUT "localhost:9200/test-idx/doc/1" -d '{
+curl -XPUT "localhost:9200/test-idx/type1/1" -d '{
     "obj1" : [
         {
             "name" : "blue",
@@ -29,7 +35,7 @@ curl -XPUT "localhost:9200/test-idx/doc/1" -d '{
     ]
 }'
 echo
-curl -XPUT "localhost:9200/test-idx/doc/2" -d '{
+curl -XPUT "localhost:9200/test-idx/type1/2" -d '{
     "obj1" : [
         {
             "name" : "blue",
@@ -44,7 +50,7 @@ curl -XPUT "localhost:9200/test-idx/doc/2" -d '{
 echo
 curl -XPOST "localhost:9200/test-idx/_refresh"
 echo
-curl "localhost:9200/test-idx/doc/_search?pretty=true" -d '{
+curl "localhost:9200/test-idx/type1/_search?pretty=true" -d '{
     "query": {
         "nested" : {
             "path" : "obj1",
@@ -53,7 +59,7 @@ curl "localhost:9200/test-idx/doc/_search?pretty=true" -d '{
                 "bool" : {
                     "must" : [
                         {
-                            "match" : {"obj1.name" : "blue"}
+                            "term" : {"obj1.name" : "blue"}
                         },
                         {
                             "range" : {"obj1.count" : {"gt" : 5}}
