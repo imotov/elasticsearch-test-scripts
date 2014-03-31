@@ -39,7 +39,7 @@ class BulkScriptGenerator
       else
         rec = Hash[fields.zip row]
         @states[rec['state']] = rec['abbreviation']
-        rec['location'] =  Hash['lat' => rec['lat'], 'lon' =>  rec['lon']]
+        rec['location'] =  Hash['lat' => rec['lat'].to_f, 'lon' =>  rec['lon'].to_f]
         rec.delete('lat')
         rec.delete('lon')
         rec['location']
@@ -64,7 +64,7 @@ class BulkScriptGenerator
         fields = row
       else
         rec = Hash[fields.zip row]
-        rec['location'] =  Hash['lat' => rec['lat'], 'lon' =>  rec['lon']]
+        rec['location'] =  Hash['lat' => rec['lat'].to_f, 'lon' =>  rec['lon'].to_f]
         rec.delete('lat')
         rec.delete('lon')
         rec['abbreviation'] =  @states[rec['state']]
