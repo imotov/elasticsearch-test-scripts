@@ -43,13 +43,10 @@ curl "localhost:9200/test-idx/doc/_search?pretty=true" -d '{
             "type": "score",
             "score_type" : "sum",
             "query" : {
-                "custom_score": {
-                    "script": "doc[\"score.points\"].value * 10",
-                    "query": {
-                        "term" : {
-                            "point_type" : "odd"
+                "function_score": {
+                        "script_score": {
+                                "script": "doc[\"score.points\"].value * 10"
                         }
-                    }
                 }
             }
         }
