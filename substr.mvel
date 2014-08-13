@@ -1,0 +1,10 @@
+str = _source[field];
+if (str != null) {
+    if (offset < str.length()) {
+        if (offset + len > str.length()) {
+            return str.substring(offset);
+        }
+        return str.substring(offset, offset + len);
+    }
+}
+return null;
