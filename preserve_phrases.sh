@@ -73,7 +73,7 @@ curl "localhost:9200/test-idx/doc/_search?pretty=true" -d '{
     },
     "fields": ["name"]
 }'
-echo "Searching for fasion police"
+echo "Searching for fashion police"
 curl "localhost:9200/test-idx/doc/_search?pretty=true" -d '{
     "query": {
         "match" : {
